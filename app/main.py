@@ -2,7 +2,7 @@ import psycopg
 import time
 
 import app.my_config as my_config
-from app import models, schemas
+from app import models, schemas, utils
 from app.database import engine, get_db
 
 from fastapi import FastAPI, status, HTTPException, Response, Depends
@@ -10,7 +10,7 @@ from psycopg.rows import dict_row
 from sqlalchemy.orm import Session
 from typing import List
 
-models.Base.metadata.create_all(bind=engine)
+models.Base.metadata.create_all(bind=engine)  # Create models
 
 app = FastAPI()
 
@@ -94,3 +94,15 @@ def update_post(id: int, post: schemas.PostCreate, db: Session = Depends(get_db)
     updated_post = post_query.first()
 
     return updated_post
+
+
+@app.post("/users", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    user.password = utils.hash(user.password)  # hash the password
+
+    new_user = models.User(**user.model_dump())
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return new_user
