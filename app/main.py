@@ -7,7 +7,8 @@ from app.routers import post, user, auth, votes
 # uvicorn app.main:app --reload
 # http://127.0.0.1:8000/docs
 
-models.Base.metadata.create_all(bind=engine)  # Create models
+# Now using Alembic instead to auto-update tables
+# models.Base.metadata.create_all(bind=engine)  # Create models
 
 app = FastAPI()
 
