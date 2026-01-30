@@ -1,16 +1,22 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-from app import models
-from app.database import engine
 from app.routers import post, user, auth, votes
 
 # uvicorn app.main:app --reload
 # http://127.0.0.1:8000/docs
 
-# Now using Alembic instead to auto-update tables
-# models.Base.metadata.create_all(bind=engine)  # Create models
-
 app = FastAPI()
+
+origins = ["*"]  # Every domain can reach out to my API
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(post.router)  # include post routes
 app.include_router(user.router)  # include user routes
