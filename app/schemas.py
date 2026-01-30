@@ -42,6 +42,11 @@ class Post(PostBase):
         from_attributes = True
 
 
+class PostOut(BaseModel):
+    Post: Post
+    votes: int
+
+
 # JWT Tokens
 class Token(BaseModel):
     access_token: str
