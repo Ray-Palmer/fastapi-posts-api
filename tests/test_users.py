@@ -1,3 +1,7 @@
+"""
+pytest .\tests\test_users.py --disable-warnings -vx
+"""
+
 import pytest
 from jose import jwt
 from app import schemas
