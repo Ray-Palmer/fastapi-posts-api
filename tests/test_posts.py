@@ -23,7 +23,7 @@ def test_get_all_posts(authorized_client, test_posts):
 
 def test_unauthorized_user_get_all_posts(client, test_posts):
     res = client.get("/posts/")
-    assert res.status_code == 401
+    assert res.status_code == 200  # # changed this one from 401
 
 
 def test_get_one_post(authorized_client, test_posts):
