@@ -77,5 +77,13 @@ jobs:
     steps:
       - name: Pulling code from git
         uses: actions/checkout@v6
-      - name: Deploying
-        run: echo "hello from deploying!"
+      - name: Deploying to Ubuntu Server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USERNAME }}
+          password: ${{ secrets.PROD_PASSWORD }}
+          script: |
+            cd app/src
+            git pull
+            echo ${{ secrets.PROD_PASSWORD }} | sudo -S systemctl restart api
